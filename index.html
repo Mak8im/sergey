@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>сережасайт</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .main-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image {
+            width: 200px;
+            height: 200px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        .problem-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .details {
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .second-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .mute-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        /* Адаптация под телефон */
+        @media (max-width: 600px) {
+            .image {
+                width: 150px;
+                height: 150px;
+            }
+
+            .problem-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+
+            .details {
+                font-size: 12px;
+            }
+
+            .mute-btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container" id="mainScreen">
+        <img src="sergey.png" alt="Picture" class="image">
+        <button class="problem-btn">Произошла какая-то проблема</button>
+        <div class="details" id="details">Подробнее</div>
+    </div>
+
+    <div class="second-screen" id="secondScreen">
+        <button class="mute-btn" id="muteBtn">Заглушить звук</button>
+    </div>
+
+    <audio id="audioPlayer" loop></audio>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+        const mainScreen = document.getElementById('mainScreen');
+        const secondScreen = document.getElementById('secondScreen');
+        const details = document.getElementById('details');
+        const muteBtn = document.getElementById('muteBtn');
+
+        const tracks = ['music.mp3', 'music1.mp3', 'music2.mp3'];
+        
+        // Функция для выбора случайного трека
+        function getRandomTrack() {
+            const randomIndex = Math.floor(Math.random() * tracks.length);
+            return tracks[randomIndex];
+        }
+
+        // Запуск музыки при загрузке страницы
+        window.onload = () => {
+            audioPlayer.src = getRandomTrack();
+            audioPlayer.volume = 1.0;
+            audioPlayer.play();
+        };
+
+        // Переключение трека при окончании
+        audioPlayer.onended = () => {
+            audioPlayer.src = getRandomTrack();
+            audioPlayer.play();
+        };
+
+        // Переход на второй экран при клике куда угодно
+        document.body.addEventListener('click', () => {
+            mainScreen.style.display = 'none';
+            secondScreen.style.display = 'block';
+            audioPlayer.src = getRandomTrack();
+            audioPlayer.play();
+        });
+
+        // Бесполезная кнопка заглушения
+        muteBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Чтобы не срабатывал клик по body
+            // Ничего не делаем, кнопка бесполезна
+        });
+    </script>
+</body>
+</html>
